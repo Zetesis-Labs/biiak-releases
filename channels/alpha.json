@@ -1,0 +1,10 @@
+{
+  "version": "0.1.0-alpha.3",
+  "notes": "Biiak: consulta los cambios de esta versión en GitHub Releases.",
+  "platforms": {
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUOWQ2TEhqelhBeWpHT0VscmtFY3k2QlA1RTFuN3RoL3AvR1Y5U2RvVTVGS2hzaHZEZmlUVnNadWIwN0RDTlZZZTN4aC9LWFZqYXFWdEMzNEdjMGQwbEEwNEY1NE1zQ0E4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkwMjUwNjQ4CWZpbGU6QmlpYWtfMC4xLjAtYWxwaGEuM194NjQtc2V0dXAuZXhlCXZlcnNpb246MC4xLjAtYWxwaGEuMwpycy9rNUtPa1dUMkxUMGVOc3djWmJPTXp2QVJwSG4vaUQxTkZ3bmVHUVI4WkJkRzdqdG5vRXRCNkVSWnFGdWI2OXFYU20rZ0pEY0E5a1l0TVd0QmNCUT09Cg==",
+      "url": "https://github.com/Zetesis-Labs/biiak-releases/releases/download/v0.1.0-alpha.3/Biiak_0.1.0-alpha.3_x64-setup.exe"
+    }
+  }
+}
