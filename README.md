@@ -23,6 +23,8 @@ El workflow `pages.yml` genera y publica la página al cambiar `main` (incluido
 `channels/alpha.json`), al publicar o modificar una release y bajo petición manual.
 Los ejecutables siguen descargándose desde GitHub Releases; no se copian a Pages.
 GitHub Pages debe estar configurado con GitHub Actions como fuente de despliegue.
+El entorno `github-pages` permite la rama `main` y los tags `v*` para los eventos
+de release; no se ejecuta código de pull requests en este workflow.
 
 - La descarga principal es la estable de mayor versión, si existe.
 - Si sólo hay alphas, se utiliza la versión publicada que señala el canal alpha.
