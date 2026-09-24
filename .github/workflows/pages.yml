@@ -1,0 +1,61 @@
+name: Página de descargas
+
+on:
+  push:
+    branches: [main]
+    paths:
+      [
+        "site/**",
+        "scripts/**",
+        "tests/**",
+        "channels/**",
+        ".bun-version",
+        ".github/workflows/pages.yml",
+      ]
+  release:
+    types: [published, edited, released, prereleased, unpublished, deleted]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: biiak-download-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+        with:
+          bun-version-file: .bun-version
+      - name: Probar selección de versión y enlaces
+        run: bun test
+      - name: Generar página con metadatos públicos
+        run: bun scripts/build-site.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e
