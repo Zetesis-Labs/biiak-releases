@@ -10,6 +10,8 @@ El código fuente de la aplicación se mantiene privado. Este repositorio contie
 [Historial de versiones](https://github.com/Zetesis-Labs/biiak-releases/releases)
 
 Las alphas son versiones de prueba exclusivamente para datos sintéticos.
+Las versiones que incluyen macOS ofrecen DMG y ZIP para Apple Silicon, con
+instalación manual y sus propias sumas SHA-256. No incluyen notarización Apple.
 La firma del actualizador no equivale a una firma Authenticode reconocida por
 Windows. Consulta las notas de cada release antes de instalar.
 
@@ -32,6 +34,8 @@ de release; no se ejecuta código de pull requests en este workflow.
   consultar alphas posteriores cuando ya existe una estable.
 - Sólo se admiten tags `vX.Y.Z` y `vX.Y.Z-alpha.N`, releases públicas completas
   y URLs exactas de este repositorio. Se ordenan por versión, no por fecha.
+- La descarga macOS sólo aparece cuando están publicados el DMG, ZIP y los tres
+  archivos de metadatos previstos. Una entrega macOS parcial impide desplegar.
 - Un fallo de API, assets incompletos o un canal incoherente hace fallar el
   despliegue: la web anterior permanece publicada. Los visitantes no consumen
   la API ni necesitan cuenta o token de GitHub.

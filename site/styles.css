@@ -329,6 +329,20 @@ p {
   line-height: 1.7;
   margin: 0 0 20px;
 }
+.macos-download {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  margin-bottom: 22px;
+}
+.macos-download h3 {
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+.macos-download .download-detail {
+  display: block;
+  font-size: 10px;
+  margin-bottom: 12px;
+}
 .notice strong {
   display: block;
   font-weight: 700;
