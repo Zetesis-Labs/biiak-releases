@@ -46,7 +46,79 @@ function channel(item) {
 const alpha3 = release("0.1.0-alpha.3");
 const alpha5 = release("0.1.0-alpha.5");
 
+function withMacos(item) {
+  const version = item.tag_name.slice(1);
+  const names = [
+    `Biiak_${version}_macOS-arm64-preview.dmg`,
+    `Biiak_${version}_macOS-arm64-preview.zip`,
+    "macos-manifest.json",
+    "macos-build-manifest.json",
+    "SHA256SUMS-macOS",
+  ];
+  return {
+    ...item,
+    assets: [
+      ...item.assets,
+      ...names.map((name) => ({
+        name,
+        browser_download_url: `https://github.com/${repository}/releases/download/${item.tag_name}/${name}`,
+        size: 230_000_000,
+        state: "uploaded",
+      })),
+    ],
+  };
+}
+
 describe("Descarga pública de Biiak", () => {
+  test("muestra DMG y ZIP sólo para una entrega macOS completa de la versión elegida", async () => {
+    const template = await readFile(
+      new URL("../site/index.html", import.meta.url),
+      "utf8",
+    );
+    const item = withMacos(release("0.1.0-alpha.15"));
+    const html = renderPage(
+      template,
+      selectReleases([alpha5, item], channel(item)),
+    );
+    for (const asset of item.assets.filter((asset) =>
+      /\.(dmg|zip)$|^SHA256SUMS-macOS$/.test(asset.name),
+    )) {
+      expect(html).toContain(`href="${asset.browser_download_url}"`);
+    }
+    expect(html).toContain("sin notarización Apple");
+    expect(html).toContain("actualización en macOS es manual");
+    expect(html).not.toContain("{{");
+    const previous = renderPage(
+      template,
+      selectReleases([alpha5, item], channel(alpha5)),
+    );
+    expect(previous).not.toContain("Descargar para Mac");
+    expect(previous).not.toContain('.dmg"');
+  });
+  test("rechaza entregas macOS parciales, duplicadas, con URL ajena o subida sin terminar", () => {
+    const complete = withMacos(alpha5);
+    for (const asset of complete.assets.slice(5)) {
+      const partial = {
+        ...complete,
+        assets: complete.assets.filter((item) => item.name !== asset.name),
+      };
+      expect(() => selectReleases([partial], channel(partial))).toThrow();
+    }
+    for (const change of [
+      { browser_download_url: "https://example.com/mac.dmg" },
+      { state: "new" },
+      { size: 0 },
+    ]) {
+      const altered = structuredClone(complete);
+      Object.assign(altered.assets[5], change);
+      expect(() => selectReleases([altered], channel(altered))).toThrow();
+    }
+    const duplicate = {
+      ...complete,
+      assets: [...complete.assets, complete.assets[5]],
+    };
+    expect(() => selectReleases([duplicate], channel(duplicate))).toThrow();
+  });
   test("destaca la alpha del canal, sin depender del orden o fecha de la API", () => {
     const result = selectReleases([alpha3, alpha5], channel(alpha5));
     expect(result.featured.version).toBe("0.1.0-alpha.5");

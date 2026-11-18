@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Descarga oficial de Biiak para Windows. Consulta la última versión disponible, las instrucciones de instalación y las versiones anteriores."
+      content="Descarga oficial de Biiak. Consulta las plataformas disponibles, las instrucciones de instalación y las versiones anteriores."
     />
     <meta name="theme-color" content="#174c49" />
     <meta
@@ -16,10 +16,10 @@
     <meta property="og:title" content="Biiak · Descargas" />
     <meta
       property="og:description"
-      content="Biiak, en tu equipo. Descarga oficial para Windows."
+      content="Biiak, en tu equipo. Centro oficial de descargas."
     />
     <meta property="og:type" content="website" />
-    <title>Descarga Biiak · Windows</title>
+    <title>Descarga Biiak · Versiones disponibles</title>
     <link rel="icon" href="assets/mark.png" type="image/png" />
     <link
       rel="preload"
@@ -102,7 +102,7 @@
               Instalador .exe <span aria-hidden="true">/</span> Publicado el
               {{DATE}}
             </p>
-            {{NOTICE}}
+            {{MACOS}} {{NOTICE}}
             <a class="text-link release-link" href="{{RELEASE}}"
               >Ver detalles de esta versión
               <span aria-hidden="true">↗</span></a
@@ -112,7 +112,9 @@
       </section>
       <div class="facts wrap" aria-label="Información de distribución">
         <p><span class="fact-number">01</span>Descarga directa desde GitHub</p>
-        <p><span class="fact-number">02</span>Actualizaciones desde la app</p>
+        <p>
+          <span class="fact-number">02</span>Versiones y sumas de verificación
+        </p>
         <p><span class="fact-number">03</span>Sin cuenta de GitHub</p>
       </div>
       <section
@@ -226,9 +228,9 @@
             </summary>
             <div class="answer">
               <p>
-                Cada release incluye la firma del actualizador y el archivo
-                SHA256SUMS. Biiak comprueba la firma antes de aceptar una
-                actualización.
+                La distribución Windows incluye la firma del actualizador y el
+                archivo SHA256SUMS. Biiak comprueba la firma antes de aceptar
+                una actualización en Windows.
               </p>
               <p>
                 Esta firma no equivale a la firma de editor que reconoce Windows
@@ -247,11 +249,7 @@
               >
             </summary>
             <div class="answer">
-              <p>
-                Este canal distribuye actualmente el instalador para Windows
-                x64. No hay una descarga pública para macOS, Linux o Windows
-                ARM64.
-              </p>
+              <p>{{MACOSHELP}}</p>
             </div>
           </details>
         </div>

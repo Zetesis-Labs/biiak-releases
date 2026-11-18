@@ -45,6 +45,17 @@ function normalizeRelease(release) {
     "SHA256SUMS",
     "distribution.json",
   ];
+  const macosFiles = [
+    `Biiak_${version}_macOS-arm64-preview.dmg`,
+    `Biiak_${version}_macOS-arm64-preview.zip`,
+    "macos-manifest.json",
+    "macos-build-manifest.json",
+    "SHA256SUMS-macOS",
+  ];
+  const hasMacos = release.assets?.some((asset) =>
+    macosFiles.includes(asset.name),
+  );
+  if (hasMacos) files.push(...macosFiles);
   for (const name of files) {
     const matches =
       release.assets?.filter((asset) => asset.name === name) ?? [];
@@ -75,6 +86,13 @@ function normalizeRelease(release) {
     date: new Date(release.published_at).toISOString().slice(0, 10),
     url: `${repositoryUrl}/releases/tag/${release.tag_name}`,
     checksums: base + "SHA256SUMS",
+    macos: hasMacos
+      ? {
+          download: base + macosFiles[0],
+          zip: base + macosFiles[1],
+          checksums: base + "SHA256SUMS-macOS",
+        }
+      : null,
   };
 }
 
@@ -146,6 +164,12 @@ export function renderPage(template, selection) {
     DATE: escapeHtml(dateLabel(release.date)),
     RELEASE: escapeHtml(release.url),
     CHECKSUMS: escapeHtml(release.checksums),
+    MACOS: release.macos
+      ? `<div class="macos-download"><h3>macOS · Apple Silicon</h3><a class="download-button" href="${escapeHtml(release.macos.download)}">Descargar para Mac · DMG</a><p class="download-detail">macOS 14 o posterior · ARM64. Instalación manual, firma ad hoc y sin notarización Apple.</p><a class="text-link" href="${escapeHtml(release.macos.zip)}">Descargar ZIP</a> · <a class="text-link" href="${escapeHtml(release.macos.checksums)}">SHA-256 de macOS</a></div>`
+      : "",
+    MACOSHELP: release.macos
+      ? "Esta versión incluye DMG y ZIP para Mac con Apple Silicon (ARM64), desde macOS 14. Abre el DMG y copia Biiak a Aplicaciones. La firma es ad hoc y no está notarizada por Apple; consulta las notas de la versión antes de abrirla. La actualización en macOS es manual. No incluye versión para Mac Intel, Linux ni Windows ARM64."
+      : "Esta versión distribuye el instalador para Windows x64. No incluye una descarga pública para macOS, Linux ni Windows ARM64.",
     NOTICE: release.alpha
       ? '<p class="notice"><strong>Estamos en fase de pruebas.</strong>Utiliza únicamente datos sintéticos. Esta versión no está preparada para uso en producción.</p>'
       : '<p class="notice stable"><strong>Versión estable.</strong>Antes de actualizar, guarda tu trabajo y consulta las notas de esta versión.</p>',
