@@ -1,3 +1,22 @@
+# Entrega Windows y macOS — 18/11/2026
+
+- Publicada y verificada [v0.1.0-alpha.16](https://github.com/Zetesis-Labs/biiak-releases/releases/tag/v0.1.0-alpha.16), con diez assets de distribución.
+- EXE Windows x64 de 92.505.735 bytes; DMG macOS ARM64 de 237.707.976 bytes;
+  ZIP macOS de 230.306.458 bytes. Descarga anónima y SHA-256 comprobados;
+  firma del actualizador Windows verificada. Canal alpha apunta a alpha.16.
+- PR #1 integrado en `3928a99ddacd57a391e809b84af2a3aa0e8c33ee`: web con
+  descargas de ambas plataformas, comprobación del conjunto macOS y límites visibles.
+- 16 tests / 57 aserciones, formato y vista a 1440/390/320 px sin JavaScript
+  correctos; sin desbordamientos. Versiones antiguas sólo Windows conservadas.
+- Despliegue [44393056116](https://github.com/Zetesis-Labs/biiak-releases/actions/runs/44393056116)
+  correcto. Web pública HTTP 200 con enlaces EXE y DMG alpha.16.
+- macOS 14+ Apple Silicon, firma ad hoc sin notarización, instalación manual;
+  sin Intel ni actualización automática macOS. Windows no incluye Authenticode.
+- Alpha para datos sintéticos. La publicación no acredita aceptación productiva
+  ni captura física prolongada. El código de la aplicación permanece privado.
+
+Los apartados siguientes son antecedentes del despliegue de septiembre.
+
 # Sesión: página pública de descargas de Biiak — actualizado 2026-09-24 20:07
 
 ## Objetivo
