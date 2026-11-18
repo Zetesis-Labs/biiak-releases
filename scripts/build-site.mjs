@@ -165,7 +165,7 @@ export function renderPage(template, selection) {
     RELEASE: escapeHtml(release.url),
     CHECKSUMS: escapeHtml(release.checksums),
     MACOS: release.macos
-      ? `<div class="macos-download"><h3>macOS · Apple Silicon</h3><a class="download-button" href="${escapeHtml(release.macos.download)}">Descargar para Mac · DMG</a><p class="download-detail">macOS 14 o posterior · ARM64. Instalación manual, firma ad hoc y sin notarización Apple.</p><a class="text-link" href="${escapeHtml(release.macos.zip)}">Descargar ZIP</a> · <a class="text-link" href="${escapeHtml(release.macos.checksums)}">SHA-256 de macOS</a></div>`
+      ? `<div class="macos-download"><h3>macOS · Apple Silicon</h3><a class="download-button" href="${escapeHtml(release.macos.download)}">Descargar para Mac · DMG</a><p class="download-detail">macOS 14 o posterior · ARM64. Abre el DMG y copia Biiak a Aplicaciones. Instalación manual, firma ad hoc y sin notarización Apple.</p><a class="text-link" href="${escapeHtml(release.macos.zip)}">Descargar ZIP</a> · <a class="text-link" href="${escapeHtml(release.macos.checksums)}">SHA-256 de macOS</a></div>`
       : "",
     MACOSHELP: release.macos
       ? "Esta versión incluye DMG y ZIP para Mac con Apple Silicon (ARM64), desde macOS 14. Abre el DMG y copia Biiak a Aplicaciones. La firma es ad hoc y no está notarizada por Apple; consulta las notas de la versión antes de abrirla. La actualización en macOS es manual. No incluye versión para Mac Intel, Linux ni Windows ARM64."
