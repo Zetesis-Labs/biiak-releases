@@ -1,10 +1,10 @@
 {
-  "version": "0.1.0-alpha.16",
+  "version": "0.1.0-alpha.17",
   "notes": "Biiak: consulta los cambios de esta versión en GitHub Releases.",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUOWQ2TEhqelhBeWpBV1lGUVdxQmpHZlh3S0kzM2UzdWpkam9JTko0R0c4Z24ybXBXL1RzSFFlNlJWQ2lZcUY3Y3NGbHNkSGQyNW1SdkFBSmM3Sk4vSmlzOWpWakZYVWdZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1MDMzNTQxCWZpbGU6QmlpYWtfMC4xLjAtYWxwaGEuMTZfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjAuMS4wLWFscGhhLjE2CjF1MGZpYU5TNzllQWRWd2RyelhYYlZSbElIMXd5VFA0RGVJOUh3UjdMMGk4MjNMWVhJL3BBbnIwM25SZ1lpQmdGZW5sSTQrOFRPeFpBTkV2R3RBMkR3PT0K",
-      "url": "https://github.com/Zetesis-Labs/biiak-releases/releases/download/v0.1.0-alpha.16/Biiak_0.1.0-alpha.16_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUOWQ2TEhqelhBeW11dkVkM3F1WWJYYzI0M296aDJrSTBaam5rOHluMGppODRBN0cxcnR4ajZoQ3lGc1F1R3pVaHJpSllQV0h3ZDFka2hudVdxam10eG5OUGFUUGIzRndzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1MDQ5NDA5CWZpbGU6QmlpYWtfMC4xLjAtYWxwaGEuMTdfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjAuMS4wLWFscGhhLjE3CkJRTTVxYklvbDgvVzBHZXJNSGJRQlJrcm5VbjlZZFU1S3ZtcTlvRWo1bTNQR1NCNDk4eThZaE8rZFBTMHlESFhiK0tQY3R1WUNxNEI5YTVsRUk3UEJnPT0K",
+      "url": "https://github.com/Zetesis-Labs/biiak-releases/releases/download/v0.1.0-alpha.17/Biiak_0.1.0-alpha.17_x64-setup.exe"
     }
   }
 }
