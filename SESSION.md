@@ -1,3 +1,21 @@
+# Entrega Windows — 22/11/2026
+
+- Publicada y verificada [v0.1.0-alpha.20 para Windows x64](https://github.com/Zetesis-Labs/biiak-releases/releases/tag/v0.1.0-alpha.20), con cinco archivos de distribución.
+- EXE de 92.494.168 bytes. Cuatro hashes SHA-256, firma del actualizador,
+  descarga anónima y canal alpha.20 comprobados. Fuente de la aplicación:
+  `f0cbfd844cacb3f94629edfefc8d1d87db65a697`.
+- Incluye preparación opcional de módulos en el primer arranque y Ajustes,
+  con consentimiento, tamaño de descarga, progreso y recuperación de trabajos.
+- Esta entrega sólo publica Windows. La última distribución pública macOS
+  permanece en alpha.18; no se anuncia DMG/ZIP de alpha.20.
+- [Pages 45059856748](https://github.com/Zetesis-Labs/biiak-releases/actions/runs/45059856748)
+  correcto. Web pública HTTP 200 con enlace directo al EXE alpha.20.
+- Continúa siendo una alpha para datos sintéticos. Windows incluye firma del
+  actualizador, sin Authenticode. No acredita aceptación productiva ni pruebas
+  físicas prolongadas de captura.
+
+Los apartados siguientes conservan antecedentes de entregas anteriores.
+
 # Entrega Windows y macOS — 18/11/2026
 
 - Publicada y verificada [v0.1.0-alpha.16](https://github.com/Zetesis-Labs/biiak-releases/releases/tag/v0.1.0-alpha.16), con diez assets de distribución.
