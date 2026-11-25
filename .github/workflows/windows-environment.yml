@@ -1,0 +1,24 @@
+name: Comprobar Windows desechable
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  probe:
+    runs-on: windows-2025
+    timeout-minutes: 5
+    steps:
+      - name: Comprobar entorno limpio para aceptación de instaladores
+        shell: pwsh
+        run: |
+          if ($env:RUNNER_ENVIRONMENT -ne 'github-hosted') { throw 'hosted_runner_required' }
+          if (Test-Path -LiteralPath 'C:\Program Files\Biiak') { throw 'installation_exists' }
+          if (Test-Path -LiteralPath 'C:\ProgramData\Biiak') { throw 'data_exists' }
+          $info = [ordered]@{
+            hosted = $true
+            windowsBuild = [Environment]::OSVersion.Version.ToString()
+            clean = $true
+          }
+          $info | ConvertTo-Json | Tee-Object -FilePath $env:GITHUB_STEP_SUMMARY
