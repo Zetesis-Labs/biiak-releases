@@ -1,0 +1,65 @@
+name: Aceptar instalador Windows
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Versión del candidato privado de distribución
+        required: true
+        type: string
+      installer_sha256:
+        description: SHA-256 del instalador firmado para el actualizador
+        required: true
+        type: string
+      source_commit:
+        description: Commit de la aplicación que produjo el instalador
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  accept:
+    if: github.ref == 'refs/heads/main'
+    runs-on: windows-2025
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario: [encrypted, plaintext, upgrade]
+    env:
+      RELEASE_TAG: ${{ inputs.release_tag }}
+      INSTALLER_SHA256: ${{ inputs.installer_sha256 }}
+      SOURCE_COMMIT: ${{ inputs.source_commit }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Descargar distribución candidata y anterior
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SCENARIO: ${{ matrix.scenario }}
+        run: |
+          if ($env:RELEASE_TAG -cnotmatch '^v[0-9]+\.[0-9]+\.[0-9]+(-alpha\.[0-9]+)?$') { throw 'invalid_tag' }
+          if ($env:INSTALLER_SHA256 -cnotmatch '^[a-f0-9]{64}$' -or $env:SOURCE_COMMIT -cnotmatch '^[a-f0-9]{40}$') { throw 'invalid_digest' }
+          $name = "Biiak_$($env:RELEASE_TAG.Substring(1))_x64-setup.exe"
+          gh release download "candidate-windows-$env:RELEASE_TAG" --repo $env:GITHUB_REPOSITORY --dir candidate --pattern $name --pattern "$name.sig" --pattern latest.json --pattern distribution.json --pattern SHA256SUMS
+          if ($LASTEXITCODE -ne 0) { throw 'candidate_download_failed' }
+          if ($env:SCENARIO -eq 'upgrade') {
+            gh release download v0.1.0-alpha.20 --repo $env:GITHUB_REPOSITORY --dir baseline --pattern Biiak_0.1.0-alpha.20_x64-setup.exe --pattern SHA256SUMS
+            if ($LASTEXITCODE -ne 0) { throw 'baseline_download_failed' }
+          }
+      - name: Probar instalador, servicio, datos y motor de texto
+        shell: pwsh
+        env:
+          SCENARIO: ${{ matrix.scenario }}
+        run: ./scripts/accept-windows-installer.ps1 -Scenario $env:SCENARIO -Tag $env:RELEASE_TAG -ExpectedHash $env:INSTALLER_SHA256 -SourceCommit $env:SOURCE_COMMIT
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: windows-acceptance-${{ matrix.scenario }}
+          path: windows-acceptance.json
+          if-no-files-found: error
+          retention-days: 30

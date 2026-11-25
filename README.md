@@ -4,7 +4,7 @@ Repositorio público de distribución de Biiak.
 
 Instaladores, firmas del actualizador, manifiestos, hashes y página de descargas.
 El código fuente de la aplicación se mantiene privado. Este repositorio contiene
-únicamente la distribución y el código de su página pública.
+únicamente la distribución, su validación externa y el código de su página pública.
 
 [Descargar Biiak](https://zetesis-labs.github.io/biiak-releases/) ·
 [Historial de versiones](https://github.com/Zetesis-Labs/biiak-releases/releases)
@@ -14,6 +14,21 @@ Las versiones que incluyen macOS ofrecen DMG y ZIP para Apple Silicon, con
 instalación manual y sus propias sumas SHA-256. No incluyen notarización Apple.
 La firma del actualizador no equivale a una firma Authenticode reconocida por
 Windows. Consulta las notas de cada release antes de instalar.
+
+## Aceptación Windows
+
+`windows-acceptance.yml` prueba un borrador `candidate-windows-v…` en tres
+máquinas Windows desechables: instalación cifrada, instalación sin cifrar y
+actualización desde alpha.20. Comprueba los hashes, versión, servicio, conservación
+de un acta sintética y de la clave de custodia, arranque del motor de texto CPU y
+desinstalación. Los recibos identifican el commit y SHA-256 del instalador.
+No recibe código fuente ni secretos del repositorio privado. El token de descarga
+no se entrega al paso que ejecuta el instalador. La VM se destruye al terminar.
+
+Esta aceptación no publica ni avanza el canal. El proceso privado verifica también
+la firma del actualizador y sólo publica los mismos bytes tras revisar los recibos.
+No acredita Authenticode, Smart App Control, GPU, micrófonos físicos ni el recorrido
+de descarga del actualizador integrado; esos controles son independientes.
 
 ## Página de descargas
 
