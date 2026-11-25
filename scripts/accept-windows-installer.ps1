@@ -95,10 +95,12 @@ try {
     $beforeMeeting = Request-Api "/api/meetings/$($meeting.id)" 'GET' $null $token | ConvertTo-Json -Depth 30 -Compress
     $beforeKey = Custody-Fingerprint
     if ($Scenario -eq 'upgrade') { Invoke-Executable $candidate @('/S', '/UPDATE') }
-    $null = Wait-Engine $version 'open'
+    $info = Wait-Engine $version 'open'
+    if ($info.storage.backend -ne 'sqlite' -or $info.storage.dataProtection -ne $mode) { throw 'upgrade_storage_mode_changed' }
     $result.versionVerified = $true
     Restart-Service -Name $serviceName
-    $null = Wait-Engine $version 'open'
+    $info = Wait-Engine $version 'open'
+    if ($info.storage.backend -ne 'sqlite' -or $info.storage.dataProtection -ne $mode) { throw 'restart_storage_mode_changed' }
     $login = Request-Api '/api/session/login' 'POST' @{ username = 'acceptance-ci'; password = $password }
     $token = [string]$login.token
     if (-not $token) { throw 'login_session_missing' }
