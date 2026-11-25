@@ -20,7 +20,36 @@ permissions:
   contents: read
 
 jobs:
+  stage:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # GitHub requires push access to read draft releases.
+    env:
+      RELEASE_TAG: ${{ inputs.release_tag }}
+      INSTALLER_SHA256: ${{ inputs.installer_sha256 }}
+      SOURCE_COMMIT: ${{ inputs.source_commit }}
+    steps:
+      - name: Descargar borrador sin ejecutar su contenido
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          printf '%s' "$RELEASE_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+(-alpha\.[0-9]+)?$'
+          printf '%s' "$INSTALLER_SHA256" | grep -Eq '^[a-f0-9]{64}$'
+          printf '%s' "$SOURCE_COMMIT" | grep -Eq '^[a-f0-9]{40}$'
+          name="Biiak_${RELEASE_TAG#v}_x64-setup.exe"
+          gh release download "candidate-windows-$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --dir candidate --pattern "$name" --pattern "$name.sig" --pattern latest.json --pattern distribution.json --pattern SHA256SUMS
+          printf '%s  %s\n' "$INSTALLER_SHA256" "candidate/$name" | sha256sum --check --strict
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: candidate-files
+          path: candidate/
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
   accept:
+    needs: stage
     if: github.ref == 'refs/heads/main'
     runs-on: windows-2025
     timeout-minutes: 30
@@ -36,21 +65,18 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - name: Descargar distribución candidata y anterior
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: candidate-files
+          path: candidate
+      - name: Descargar distribución anterior
+        if: matrix.scenario == 'upgrade'
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-          SCENARIO: ${{ matrix.scenario }}
         run: |
-          if ($env:RELEASE_TAG -cnotmatch '^v[0-9]+\.[0-9]+\.[0-9]+(-alpha\.[0-9]+)?$') { throw 'invalid_tag' }
-          if ($env:INSTALLER_SHA256 -cnotmatch '^[a-f0-9]{64}$' -or $env:SOURCE_COMMIT -cnotmatch '^[a-f0-9]{40}$') { throw 'invalid_digest' }
-          $name = "Biiak_$($env:RELEASE_TAG.Substring(1))_x64-setup.exe"
-          gh release download "candidate-windows-$env:RELEASE_TAG" --repo $env:GITHUB_REPOSITORY --dir candidate --pattern $name --pattern "$name.sig" --pattern latest.json --pattern distribution.json --pattern SHA256SUMS
-          if ($LASTEXITCODE -ne 0) { throw 'candidate_download_failed' }
-          if ($env:SCENARIO -eq 'upgrade') {
-            gh release download v0.1.0-alpha.20 --repo $env:GITHUB_REPOSITORY --dir baseline --pattern Biiak_0.1.0-alpha.20_x64-setup.exe --pattern SHA256SUMS
-            if ($LASTEXITCODE -ne 0) { throw 'baseline_download_failed' }
-          }
+          gh release download v0.1.0-alpha.20 --repo $env:GITHUB_REPOSITORY --dir baseline --pattern Biiak_0.1.0-alpha.20_x64-setup.exe --pattern SHA256SUMS
+          if ($LASTEXITCODE -ne 0) { throw 'baseline_download_failed' }
       - name: Probar instalador, servicio, datos y motor de texto
         shell: pwsh
         env:

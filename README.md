@@ -22,8 +22,11 @@ máquinas Windows desechables: instalación cifrada, instalación sin cifrar y
 actualización desde alpha.20. Comprueba los hashes, versión, servicio, conservación
 de un acta sintética y de la clave de custodia, arranque del motor de texto CPU y
 desinstalación. Los recibos identifican el commit y SHA-256 del instalador.
-No recibe código fuente ni secretos del repositorio privado. El token de descarga
-no se entrega al paso que ejecuta el instalador. La VM se destruye al terminar.
+No recibe código fuente ni secretos del repositorio privado. GitHub exige permiso
+de escritura para leer borradores: sólo lo recibe un job Linux que descarga y
+comprueba el EXE, sin ejecutarlo. Los jobs Windows reciben esos archivos como
+artefacto del mismo run y conservan permiso de sólo lectura. Ningún token se
+entrega al paso que ejecuta el instalador. La VM se destruye al terminar.
 
 Esta aceptación no publica ni avanza el canal. El proceso privado verifica también
 la firma del actualizador y sólo publica los mismos bytes tras revisar los recibos.
